@@ -1,299 +1,308 @@
 <div align="center">
 
-# 🍵 Matcha-TTS: A fast TTS architecture with conditional flow matching
+# 🍵 Matcha-TTS Romanian: Fast Neural TTS for Romanian Language
 
-### [Shivam Mehta](https://www.kth.se/profile/smehta), [Ruibo Tu](https://www.kth.se/profile/ruibo), [Jonas Beskow](https://www.kth.se/profile/beskow), [Éva Székely](https://www.kth.se/profile/szekely), and [Gustav Eje Henter](https://people.kth.se/~ghe/)
+### A Romanian language adaptation of [Matcha-TTS](https://github.com/shivammehta25/Matcha-TTS)
 
 [![python](https://img.shields.io/badge/-Python_3.10-blue?logo=python&logoColor=white)](https://www.python.org/downloads/release/python-3100/)
 [![pytorch](https://img.shields.io/badge/PyTorch_2.0+-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/get-started/locally/)
 [![lightning](https://img.shields.io/badge/-Lightning_2.0+-792ee5?logo=pytorchlightning&logoColor=white)](https://pytorchlightning.ai/)
-[![hydra](https://img.shields.io/badge/Config-Hydra_1.3-89b8cd)](https://hydra.cc/)
-[![black](https://img.shields.io/badge/Code%20Style-Black-black.svg?labelColor=gray)](https://black.readthedocs.io/en/stable/)
-[![isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
-[![PyPI Downloads](https://static.pepy.tech/personalized-badge/matcha-tts?period=total&units=INTERNATIONAL_SYSTEM&left_color=BLACK&right_color=GREEN&left_text=downloads)](https://pepy.tech/projects/matcha-tts)
+[![huggingface](https://img.shields.io/badge/🤗-Models_on_Hub-yellow)](https://huggingface.co/adrianstanea/Ro-Matcha-TTS)
+
 <p style="text-align: center;">
   <img src="https://shivammehta25.github.io/Matcha-TTS/images/logo.png" height="128"/>
 </p>
 
 </div>
 
-> This is the official code implementation of 🍵 Matcha-TTS [ICASSP 2024].
+> **Romanian Language Adaptation** of the fast conditional flow matching TTS architecture from [ICASSP 2024](https://arxiv.org/abs/2309.03199). This fork extends Matcha-TTS to support high-quality Romanian text-to-speech synthesis using the SWARA 1.0 dataset.
 
-We propose 🍵 Matcha-TTS, a new approach to non-autoregressive neural TTS, that uses [conditional flow matching](https://arxiv.org/abs/2210.02747) (similar to [rectified flows](https://arxiv.org/abs/2209.03003)) to speed up ODE-based speech synthesis. Our method:
+**Official Repository:** [shivammehta25/Matcha-TTS](https://github.com/shivammehta25/Matcha-TTS)
 
-- Is probabilistic
-- Has compact memory footprint
-- Sounds highly natural
-- Is very fast to synthesise from
+## 🚀 Quick Start with Pre-trained Models
 
-Check out our [demo page](https://shivammehta25.github.io/Matcha-TTS) and read [our ICASSP 2024 paper](https://arxiv.org/abs/2309.03199) for more details.
+**Get started with Romanian TTS in seconds!** Visit our HuggingFace repository for the easiest inference experience:
 
-[Pre-trained models](https://drive.google.com/drive/folders/17C_gYgEHOxI5ZypcfE_k1piKCtyR0isJ?usp=sharing) will be automatically downloaded with the CLI or gradio interface.
+### 🤗 [adrianstanea/Ro-Matcha-TTS](https://huggingface.co/adrianstanea/Ro-Matcha-TTS)
 
-You can also [try 🍵 Matcha-TTS in your browser on HuggingFace 🤗 spaces](https://huggingface.co/spaces/shivammehta25/Matcha-TTS).
+The HuggingFace repository provides:
 
-## Teaser video
+- **Pre-trained model checkpoints** ready for download
+- **Clean, ready-to-run examples** for Romanian speech generation
+- **Step-by-step inference guide** optimized for quick setup
+- **Sample texts and outputs** to get you started immediately
 
-[![Watch the video](https://img.youtube.com/vi/xmvJkz3bqw0/hqdefault.jpg)](https://youtu.be/xmvJkz3bqw0)
+The repository leverages this source code for model architecture while providing a streamlined inference experience with all necessary checkpoints and examples.
 
-## Installation
+#### 📊 Available Models
 
-1. Create an environment (suggested but optional)
+| Speaker | Gender | Model Size | HuggingFace Link                                                                                     |
+| ------- | ------ | ---------- | ---------------------------------------------------------------------------------------------------- |
+| BAS     | Male   | ~100M      | [adrianstanea/Ro-Matcha-TTS](https://huggingface.co/adrianstanea/Ro-Matcha-TTS/tree/main/models/bas) |
+| SGS     | Male   | ~100M      | [adrianstanea/Ro-Matcha-TTS](https://huggingface.co/adrianstanea/Ro-Matcha-TTS/tree/main/models/sgs) |
 
-```
-conda create -n matcha-tts python=3.10 -y
-conda activate matcha-tts
-```
+---
 
-2. Install Matcha TTS using pip or from source
+**For Training & Development:** Continue reading below for installation, training, and adaptation instructions.
+
+## 🔬 Romanian Language Adaptation
+
+This adaptation extends Matcha-TTS to Romanian through several key modifications:
+
+### Core Changes
+
+1. **Phonemizer Configuration**: Switched from English to Romanian eSpeak backend
+2. **Text Processing**: Custom `romanian_cleaners()` function that preserves Romanian diacritics
+3. **Dataset Integration**: SWARA 1.0 Romanian speech corpus with computed statistics
+4. **Training Optimizations**: Batch handling improvements for training stability
+
+**Phonetic Processing:**
+
+- Uses eSpeak Romanian phonemizer (`language="ro"`)
+- Preserves stress markers and punctuation for natural prosody
+- Removes ASCII conversion to maintain Romanian character integrity
+- Handles diacritics: ă, â, î, ș, ț
+
+## 🛠️ Installation & Setup
+
+### For Inference Only
 
 ```bash
-pip install matcha-tts
-```
-
-from source
-
-```bash
-pip install git+https://github.com/shivammehta25/Matcha-TTS.git
+git clone https://github.com/adrianstanea/Matcha-TTS.git
 cd Matcha-TTS
+conda create -n matcha-tts-ro python=3.10 -y
+conda activate matcha-tts-ro
 pip install -e .
 ```
 
-3. Run CLI / gradio app / jupyter notebook
+### For Training
 
 ```bash
-# This will download the required models
-matcha-tts --text "<INPUT TEXT>"
+# Additional dependencies for training
+pip install pytorch-lightning wandb
+# Install phonemizer with eSpeak support
+sudo apt-get install espeak espeak-data libespeak1 libespeak-dev
+pip install phonemizer
 ```
 
-or
+## 📖 Usage Guide
+
+### Inference with Pre-trained Models
+
+#### Command Line Interface
 
 ```bash
-matcha-tts-app
+python inference_RO.py \
+    --file texts.txt \
+    --checkpoint matcha-tts-BAS.ckpt \
+    --n_timesteps 50 \
+    --length_scale 0.95 \
+    --temperature 0.667
 ```
 
-or open `synthesis.ipynb` on jupyter notebook
+#### Parameters
 
-### CLI Arguments
+- `--n_timesteps`: Number of ODE solver steps (default: 50)
+- `--length_scale`: Speaking rate control (default: 0.95)
+- `--temperature`: Sampling temperature (default: 0.667)
 
-- To synthesise from given text, run:
+### Training from Scratch
+
+#### Prepare Dataset
+
+1. Organize your Romanian speech data following SWARA format:
+
+2. Update dataset configuration:
 
 ```bash
-matcha-tts --text "<INPUT TEXT>"
+# Edit configs/data/swara.yaml with your paths
+train_filelist_path: path/to/your/metadata_train.csv
+valid_filelist_path: path/to/your/metadata_val.csv
 ```
 
-- To synthesise from a file, run:
+#### Start Training
 
 ```bash
-matcha-tts --file <PATH TO FILE>
+# Train base model
+python matcha/train.py experiment=swara trainer.max_epochs=1000
+
+# Fine-tune for specific speaker
+python matcha/train.py experiment=swara_bas trainer.max_epochs=1000 ckpt_path=base_model.ckpt
 ```
 
-- To batch synthesise from a file, run:
+#### Using Makefile
 
 ```bash
-matcha-tts --file <PATH TO FILE> --batched
+# Available training targets
+make train-swara          # Base SWARA training
+make finetune-swara_bas   # Fine-tune BAS speaker
+make finetune-swara_sgs   # Fine-tune SGS speaker
 ```
 
-Additional arguments
+### Fine-tuning for New Speakers
 
-- Speaking rate
+1. **Prepare speaker data** (minimum 10 high-quality samples recommended)
+2. **Create dataset configuration**:
+```yaml
+# configs/data/your_speaker.yaml
+defaults:
+  - swara
+  - _self_
 
+train_filelist_path: resources/filelists/your_speaker_train.csv
+valid_filelist_path: resources/filelists/your_speaker_val.csv
+```
+
+3. **Start fine-tuning**:
 ```bash
-matcha-tts --text "<INPUT TEXT>" --speaking_rate 1.0
+python matcha/train.py \
+    experiment=your_speaker \
+    trainer.max_epochs=500 \
+    ckpt_path=matcha-base-1000.ckpt
 ```
 
-- Sampling temperature
+## 🔍 For Researchers
 
-```bash
-matcha-tts --text "<INPUT TEXT>" --temperature 0.667
+### Adaptation Methodology
+
+Our Romanian adaptation follows a systematic approach suitable for other languages:
+
+1. **Phonemizer Selection**: Evaluate available phonemizers (eSpeak, Phonemizer, etc.)
+2. **Text Cleaning Pipeline**: Design language-specific text processing
+3. **Dataset Integration**: Compute mel-spectrogram statistics for target language
+4. **Training Strategy**: Base model training followed by speaker-specific fine-tuning
+
+### Key Technical Decisions
+
+**Text Processing Trade-offs:**
+- **Removed ASCII conversion**: Preserves Romanian diacritics essential for pronunciation
+- **Disabled abbreviation expansion**: Romanian abbreviations differ significantly from English
+- **Maintained stress markers**: Critical for Romanian prosody and naturalness
+
+**Training Optimizations:**
+- **Batch size handling**: Drop incomplete batches to ensure training stability
+- **Mel statistics**: Language-specific normalization improves convergence
+- **Multi-speaker approach**: Base model + speaker fine-tuning for efficiency
+
+## 🌍 Extending to Other Languages
+
+This repository provides a template for adapting Matcha-TTS to new languages. Follow these steps:
+
+### Step 1: Text Processing Setup
+
+```python
+# matcha/text/cleaners.py
+def your_language_cleaners(text):
+    """Pipeline for [YourLanguage] text processing"""
+    # Step 1: Decide on ASCII conversion based on script
+    if uses_latin_script_with_diacritics:
+        # Skip convert_to_ascii(text) like Romanian
+        pass
+    else:
+        text = convert_to_ascii(text)
+
+    # Step 2: Language-specific preprocessing
+    text = lowercase(text)
+
+    # Step 3: Handle abbreviations if applicable
+    if has_similar_abbreviations_to_english:
+        text = expand_abbreviations(text)
+
+    # Step 4: Phonemization
+    phonemes = global_phonemizer.phonemize([text], strip=True, njobs=1)[0]
+    phonemes = remove_brackets(phonemes)
+    phonemes = collapse_whitespace(phonemes)
+    return phonemes
+
+# Configure phonemizer
+global_phonemizer = phonemizer.backend.EspeakBackend(
+    language="your-lang-code",  # e.g., "de", "fr", "es"
+    preserve_punctuation=True,
+    with_stress=True,
+    language_switch="remove-flags",
+)
 ```
 
-- Euler ODE solver steps
-
-```bash
-matcha-tts --text "<INPUT TEXT>" --steps 10
-```
-
-## Train with your own dataset
-
-Let's assume we are training with LJ Speech
-
-1. Download the dataset from [here](https://keithito.com/LJ-Speech-Dataset/), extract it to `data/LJSpeech-1.1`, and prepare the file lists to point to the extracted data like for [item 5 in the setup of the NVIDIA Tacotron 2 repo](https://github.com/NVIDIA/tacotron2#setup).
-
-2. Clone and enter the Matcha-TTS repository
-
-```bash
-git clone https://github.com/shivammehta25/Matcha-TTS.git
-cd Matcha-TTS
-```
-
-3. Install the package from source
-
-```bash
-pip install -e .
-```
-
-4. Go to `configs/data/ljspeech.yaml` and change
+### Step 2: Dataset Configuration
 
 ```yaml
-train_filelist_path: data/filelists/ljs_audio_text_train_filelist.txt
-valid_filelist_path: data/filelists/ljs_audio_text_val_filelist.txt
+# configs/data/your_language.yaml
+defaults:
+  - ljspeech
+  - _self_
+
+name: your_language
+train_filelist_path: resources/filelists/your_lang_train.csv
+valid_filelist_path: resources/filelists/your_lang_val.csv
+cleaners: [your_language_cleaners]
+
+# Compute these statistics from your dataset
+data_statistics:
+  mel_mean: -X.XXX  # Compute using scripts/compute_data_statistics.py
+  mel_std: X.XXX
 ```
 
-5. Generate normalisation statistics with the yaml file of dataset configuration
+### Step 3: Training Configuration
 
-```bash
-matcha-data-stats -i ljspeech.yaml
-# Output:
-#{'mel_mean': -5.53662231756592, 'mel_std': 2.1161014277038574}
+```yaml
+# configs/experiment/your_language.yaml
+defaults:
+  - override /data: your_language.yaml
+
+tags: ["your_language"]
+run_name: your_language_base
 ```
 
-Update these values in `configs/data/ljspeech.yaml` under `data_statistics` key.
 
-```bash
-data_statistics:  # Computed for ljspeech dataset
-  mel_mean: -5.536622
-  mel_std: 2.116101
+## 📚 Model Details
+
+### Architecture
+
+Based on Matcha-TTS conditional flow matching architecture:
+- **Text Encoder**: Transformer-based with Romanian phoneme embeddings
+- **Duration Predictor**: Variance-preserving flow matching
+- **Acoustic Model**: Conditional flow matching for mel-spectrogram generation
+- **Vocoder**: HiFi-GAN universal vocoder
+
+### Training Details
+
+**Speaker Fine-tuning:**
+
+- **Base checkpoint**: Pre-trained SWARA model (1K epochs)
+- **Strategy**: Continued training with speaker-specific data
+
+## 🤝 Contributing & Citation
+
+### Contributing
+
+We welcome contributions for:
+- Additional Romanian speakers/datasets
+- Other language adaptations
+- Training improvements and optimizations
+- Bug fixes and documentation
+
+Please open an issue or pull request on GitHub.
+
+### Citation
+
+If you use this Romanian adaptation in your research, please cite:
+
+```bibtex
+@ARTICLE{11269795,
+  author={Răgman, Teodora and Bogdan Stânea, Adrian and Cucu, Horia and Stan, Adriana},
+  journal={IEEE Access},
+  title={How Open Is Open TTS? A Practical Evaluation of Open Source TTS Tools},
+  year={2025},
+  volume={13},
+  number={},
+  pages={203415-203428},
+  keywords={Computer architecture;Training;Text to speech;Spectrogram;Decoding;Computational modeling;Codecs;Predictive models;Acoustics;Low latency communication;Speech synthesis;open tools;evaluation;computational requirements;TTS adaptation;text-to-speech;objective measures;listening test;Romanian},
+  doi={10.1109/ACCESS.2025.3637322}
+}
 ```
 
-to the paths of your train and validation filelists.
-
-6. Run the training script
-
-```bash
-make train-ljspeech
-```
-
-or
-
-```bash
-python matcha/train.py experiment=ljspeech
-```
-
-- for a minimum memory run
-
-```bash
-python matcha/train.py experiment=ljspeech_min_memory
-```
-
-- for multi-gpu training, run
-
-```bash
-python matcha/train.py experiment=ljspeech trainer.devices=[0,1]
-```
-
-7. Synthesise from the custom trained model
-
-```bash
-matcha-tts --text "<INPUT TEXT>" --checkpoint_path <PATH TO CHECKPOINT>
-```
-
-## ONNX support
-
-> Special thanks to [@mush42](https://github.com/mush42) for implementing ONNX export and inference support.
-
-It is possible to export Matcha checkpoints to [ONNX](https://onnx.ai/), and run inference on the exported ONNX graph.
-
-### ONNX export
-
-To export a checkpoint to ONNX, first install ONNX with
-
-```bash
-pip install onnx
-```
-
-then run the following:
-
-```bash
-python3 -m matcha.onnx.export matcha.ckpt model.onnx --n-timesteps 5
-```
-
-Optionally, the ONNX exporter accepts **vocoder-name** and **vocoder-checkpoint** arguments. This enables you to embed the vocoder in the exported graph and generate waveforms in a single run (similar to end-to-end TTS systems).
-
-**Note** that `n_timesteps` is treated as a hyper-parameter rather than a model input. This means you should specify it during export (not during inference). If not specified, `n_timesteps` is set to **5**.
-
-**Important**: for now, torch>=2.1.0 is needed for export since the `scaled_product_attention` operator is not exportable in older versions. Until the final version is released, those who want to export their models must install torch>=2.1.0 manually as a pre-release.
-
-### ONNX Inference
-
-To run inference on the exported model, first install `onnxruntime` using
-
-```bash
-pip install onnxruntime
-pip install onnxruntime-gpu  # for GPU inference
-```
-
-then use the following:
-
-```bash
-python3 -m matcha.onnx.infer model.onnx --text "hey" --output-dir ./outputs
-```
-
-You can also control synthesis parameters:
-
-```bash
-python3 -m matcha.onnx.infer model.onnx --text "hey" --output-dir ./outputs --temperature 0.4 --speaking_rate 0.9 --spk 0
-```
-
-To run inference on **GPU**, make sure to install **onnxruntime-gpu** package, and then pass `--gpu` to the inference command:
-
-```bash
-python3 -m matcha.onnx.infer model.onnx --text "hey" --output-dir ./outputs --gpu
-```
-
-If you exported only Matcha to ONNX, this will write mel-spectrogram as graphs and `numpy` arrays to the output directory.
-If you embedded the vocoder in the exported graph, this will write `.wav` audio files to the output directory.
-
-If you exported only Matcha to ONNX, and you want to run a full TTS pipeline, you can pass a path to a vocoder model in `ONNX` format:
-
-```bash
-python3 -m matcha.onnx.infer model.onnx --text "hey" --output-dir ./outputs --vocoder hifigan.small.onnx
-```
-
-This will write `.wav` audio files to the output directory.
-
-## Extract phoneme alignments from Matcha-TTS
-
-If the dataset is structured as
-
-```bash
-data/
-└── LJSpeech-1.1
-    ├── metadata.csv
-    ├── README
-    ├── test.txt
-    ├── train.txt
-    ├── val.txt
-    └── wavs
-```
-Then you can extract the phoneme level alignments from a Trained Matcha-TTS model using:
-```bash
-python  matcha/utils/get_durations_from_trained_model.py -i dataset_yaml -c <checkpoint>
-```
-Example:
-```bash
-python  matcha/utils/get_durations_from_trained_model.py -i ljspeech.yaml -c matcha_ljspeech.ckpt
-```
-or simply:
-```bash
-matcha-tts-get-durations -i ljspeech.yaml -c matcha_ljspeech.ckpt
-```
----
-## Train using extracted alignments
-
-In the datasetconfig turn on load duration.
-Example: `ljspeech.yaml`
-```
-load_durations: True
-```
-or see an examples in configs/experiment/ljspeech_from_durations.yaml
-
-
-## Citation information
-
-If you use our code or otherwise find this work useful, please cite our paper:
-
-```text
+**Original Matcha-TTS Citation:**
+```bibtex
 @inproceedings{mehta2024matcha,
   title={Matcha-{TTS}: A fast {TTS} architecture with conditional flow matching},
   author={Mehta, Shivam and Tu, Ruibo and Beskow, Jonas and Sz{\'e}kely, {\'E}va and Henter, Gustav Eje},
@@ -302,14 +311,18 @@ If you use our code or otherwise find this work useful, please cite our paper:
 }
 ```
 
-## Acknowledgements
+### Acknowledgments
 
-Since this code uses [Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template), you have all the powers that come with it.
+- **Original Matcha-TTS**: [Shivam Mehta et al.](https://github.com/shivammehta25/Matcha-TTS)
+- **SWARA 1.0 Dataset**: Romanian speech corpus used for training
+- **eSpeak**: Phonemization support for Romanian language
 
-Other source code we would like to acknowledge:
+### License
 
-- [Coqui-TTS](https://github.com/coqui-ai/TTS/tree/dev): For helping me figure out how to make cython binaries pip installable and encouragement
-- [Hugging Face Diffusers](https://huggingface.co/): For their awesome diffusers library and its components
-- [Grad-TTS](https://github.com/huawei-noah/Speech-Backbones/tree/main/Grad-TTS): For the monotonic alignment search source code
-- [torchdyn](https://github.com/DiffEqML/torchdyn): Useful for trying other ODE solvers during research and development
-- [labml.ai](https://nn.labml.ai/transformers/rope/index.html): For the RoPE implementation
+This project maintains the same license as the original Matcha-TTS repository.
+
+---
+
+**🎯 Quick Links:**
+
+- [SWARA Dataset](https://speech.utcluj.ro/swarasc)
